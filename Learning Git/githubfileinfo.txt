@@ -1,0 +1,130 @@
+Git has 3 zones on your machine, plus GitHub as the 4th remote zone. Every command moves code between zones.
+Working directory
+? git add ?
+Staging area
+? git commit ?
+Local repo
+? git push ?
+GitHub (remote)
+Analogy: working directory = your desk, staging = the outbox tray, local repo = your filing cabinet, GitHub = the company server
+
+1. First-time setup (do once)
+Configure your identity
+Git stamps every commit with your name and email. Set these once globally.
+$
+git config --global user.name "Your Name"
+$
+git config --global user.email "you@email.com"
+$
+git config --global init.defaultBranch main
+Run git config --list to verify your settings were saved.
+2. git init — start tracking a project
+Initialise a new repo
+Creates a hidden .git/ folder. That folder IS your entire version history — don't delete it.
+$
+mkdir my-project && cd my-project
+$
+git init
+$
+git status
+Common mistake: running git init inside your home directory (~). Always cd into your project folder first.
+3. Commits — saving snapshots
+The add → commit cycle
+You must stage files before committing. Think of it as choosing what goes into this snapshot.
+$
+git add filename.py
+one file
+$
+git add .
+all changed files
+$
+git commit -m "add data cleaning script"
+$
+git log --oneline
+see history
+Good commit message format: verb + what + why. "add", "fix", "update", "remove". Keep it under 50 chars.
+Common mistake: one giant commit at the end of the day. Commit after each logical chunk — after each function, each fix, each mini task.
+The .gitignore file — what NOT to track
+Create this file before your first commit. Prevents secrets and junk from going to GitHub.
+$
+touch .gitignore
+.env
+__pycache__/
+*.pyc
+.venv/
+*.csv
+*.pkl
+.DS_Store
+Common mistake: committing your .env file with API keys. Always add .env to .gitignore before first commit.
+4. Branches — working without breaking things
+A branch is a parallel copy of your code. Work on a feature in a branch. When it's done and working, merge it into main. Your main branch should always contain working code.
+Create and switch
+$
+git branch feature-scraper
+$
+git checkout feature-scraper
+or in one command:
+$
+git checkout -b feature-scraper
+Merge back to main
+$
+git checkout main
+$
+git merge feature-scraper
+$
+git branch -d feature-scraper
+Common mistake: committing directly to main for every change. Use branches — it mirrors real team workflows and looks better on GitHub.
+5. GitHub push — first time
+Connect local repo to GitHub
+Create a new empty repo on GitHub first (no README, no .gitignore — you already have those locally). Then run:
+$
+git remote add origin https://github.com/you/repo-name.git
+$
+git branch -M main
+$
+git push -u origin main
+The -u flag sets upstream — after this you only need git push
+Use SSH keys instead of HTTPS password — run ssh-keygen, add public key to GitHub Settings → SSH Keys. No more typing passwords.
+Day-to-day push cycle
+write code
+→
+git add .
+→
+git commit -m "..."
+→
+git push
+$
+git status
+always check first
+$
+git add .
+$
+git commit -m "finish pandas EDA notebook"
+$
+git push
+6. Useful commands to know now
+git status
+Shows what's changed, staged, untracked. Run this constantly.
+git log --oneline
+See your commit history in compact form.
+git diff
+See exactly what changed line by line before staging.
+git stash
+Temporarily shelve changes to switch branches cleanly. Get them back with git stash pop.
+git reset HEAD~1
+Undo last commit but keep the changes. Safe escape hatch.
+git pull
+Fetch + merge changes from GitHub. Run before starting work each day.
+7. Today's mini task — do this right now
+Build your Phase 1 repo in 15 minutes
+1. Create folder: mkdir phase1-foundations && cd phase1-foundations
+2. Run git init
+3. Create .gitignore with the contents above
+4. Create README.md — one line: "# Phase 1 — AI/ML Foundations"
+5. Create folder structure: mkdir src tests notebooks docs
+6. git add . then git commit -m "initial project structure"
+7. Create empty repo on GitHub, push with the commands above
+8. Create a branch: git checkout -b week1-setup
+9. Add a file, commit it, push the branch: git push -u origin week1-setup
+10. Go to GitHub and open a Pull Request from week1-setup into main
+After this task you'll have: a real repo, a proper commit history, a branch, and a PR. That's the full workflow in one session.
